@@ -5,10 +5,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: false
+    open: false,
+    allowedHosts: true
   },
   preview: {
     host: true,
-    port: parseInt(process.env.PORT || '3000')
+    port: parseInt(process.env.PORT || '3000'),
+    allowedHosts: true
   }
 });
