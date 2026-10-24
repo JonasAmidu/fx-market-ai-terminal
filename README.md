@@ -1,86 +1,128 @@
-# FX Market AI Terminal
+# FX APEX TERMINAL | AI Market Intelligence Platform
 
-A React dashboard prototype for exploring currency pairs, viewing a simulated candlestick chart, requesting AI market summaries, and listening to spoken commentary. The interface is branded **FX APEX TERMINAL** and uses a dark theme with a responsive three-column layout.
+An institutional-grade Forex Market Analysis application built with **React**, **TypeScript**, **Tailwind CSS**, and **Vite**.
 
-**Project status:** this repository contains a standalone UI component, not a complete runnable application. Quotes, chart candles, currency strength values, and economic events are demo data. The interface's “Live Feeds” labels do not indicate a connected market data service.
+Designed with a high-density Bloomberg & TradingView dark terminal aesthetic, it provides real-time currency analytics, interactive canvas candlestick charting with real mathematical indicators, Smart Money Concepts (SMC) order blocks, dual AI engine analysis, spoken audio broadcasts, position risk sizing, currency strength ranking, correlation heatmaps, and an interactive AI Copilot.
 
-## Features
+---
 
-- **Watchlist:** select EUR/USD, GBP/USD, USD/JPY, AUD/USD, USD/CAD, GBP/JPY, or XAU/USD.
-- **Canvas chart:** synthetic candlesticks, six timeframe selectors, and illustrative EMA overlays.
-- **Market scan interface:** display a signal, entry price, stop loss, take profit, technical rationale, and voiceover script from a Gemini response.
-- **Audio commentary:** optional ElevenLabs text-to-speech, with browser speech synthesis as a fallback when supported.
-- **Playback controls:** play, pause, resume, stop, and an animated audio indicator.
-- **Voice settings:** eight predefined voices and an option to read scans automatically.
-- **Risk calculator:** editable account balance, risk percentage, and stop-loss distance, with cash-at-risk and lot-size estimates.
-- **Market overview:** example currency strength tiles and high-impact economic events.
+## Key Features
 
-## Repository contents
+### 1. Interactive Technical & Candlestick Charting
+- **HTML5 Canvas Performance**: Smooth, high-DPI rendering for ultra-responsive interaction.
+- **Multiple Timeframes**: 1M, 5M, 15M, 1H, 4H, and 1D.
+- **Real Mathematical Indicators**:
+  - **EMAs**: EMA 9, EMA 20, EMA 50, EMA 200 calculated with true exponential smoothing.
+  - **Bollinger Bands**: 20-period with 2 standard deviations and shaded volatility channel.
+  - **RSI Subchart**: 14-period Relative Strength Index with 70/30 overbought & oversold levels.
+  - **MACD Subchart**: 12/26/9 MACD Line, Signal Line, and colored momentum histogram.
+  - **Smart Money Concepts (SMC)**: Automated detection and visualization of Bullish & Bearish **Order Blocks (OB)** and **Fair Value Gaps (FVG)**.
+- **Interactive Crosshair**: Hover inspection displaying exact Time, Open, High, Low, Close, Volume, and price cursor labels.
+
+### 2. Dual AI Forex Analysis Engine
+- **Live Google Gemini API Integration**:
+  - Connect your Gemini API key in Settings (supports `gemini-2.5-flash`, `gemini-1.5-flash`, `gemini-1.5-pro`).
+  - Synthesizes live market metrics, recent OHLC history, and indicator data to produce structured trade signals (`STRONG BUY`, `BUY`, `NEUTRAL`, `SELL`, `STRONG SELL`), entry price, stop-loss, dual take-profits (TP1, TP2), risk/reward ratio, and institutional rationale.
+- **Built-in Quantitative Heuristic Fallback Engine**:
+  - **Zero-key required**: If no Gemini key is provided, the terminal automatically runs the quant engine calculating real RSI divergence, EMA stack slope, and ATR volatility to generate dynamic, authentic trade setups.
+
+### 3. Voiceover Audio Commentary & Broadcasting
+- **ElevenLabs HD Speech**: Optional integration with 8 predefined analyst voices (Rachel, Domi, Bella, Antoni, Elli, Josh, Adam, Sam).
+- **Web Speech API Fallback**: Built-in browser speech synthesis fallback requiring zero setup or keys.
+- **Audio Controls**: Play, pause, resume, stop, and an animated audio waveform visualizer.
+- **Speech Speed Control**: Configurable from 0.8x to 1.4x with optional auto-play upon scan completion.
+
+### 4. Interactive AI Forex Copilot
+- Dedicated AI chat assistant trained on foreign exchange market structure, central bank policy (Fed, ECB, BOJ, BOE), macroeconomic releases, and risk management.
+- Quick-prompt chips for instantaneous setup inquiries.
+
+### 5. Institutional Risk & Position Sizing Calculator
+- Calculates exact **Cash at Risk**, **Lot Size** (Standard, Mini, Micro lots), and **Required Margin** based on:
+  - Account capital ($)
+  - Risk percentage (0.5%, 1%, 2%)
+  - Stop-loss distance in pips (with one-click "Sync AI" button to match active scan)
+  - Account leverage (1:30, 1:50, 1:100, 1:500)
+  - Currency-pair specific pip valuations (e.g. standard pairs vs JPY crosses vs Gold).
+
+### 6. Relative Currency Strength & Asset Correlation
+- **8-Currency Strength Gauge**: Dynamic live momentum scoring for USD, EUR, GBP, JPY, AUD, CAD, CHF, and NZD with automated divergence pairing.
+- **30-Day Rolling Correlation Matrix**: Interactive heatmap showing positive and inverse correlations between EUR/USD, GBP/USD, USD/JPY, AUD/USD, USD/CAD, and XAU/USD.
+
+### 7. Macro Economic Calendar
+- High and medium impact economic events (CPI, FOMC, ECB Rate Decisions, Employment, GDP).
+- Filter by currency or impact rating.
+- AI Macro Impact verdicts predicting currency directional bias.
+
+---
+
+## Project Structure
 
 ```text
-fx_market_ai_terminal.tsx   Main dashboard component, exported as App
-README.md                  Project overview and integration notes
+fx-market-ai-terminal/
+├── src/
+│   ├── types/
+│   │   └── forex.ts                 # Full TypeScript interfaces & types
+│   ├── services/
+│   │   ├── technicalIndicators.ts   # EMA, Bollinger, RSI, MACD, Order Blocks math
+│   │   ├── marketDataGenerator.ts   # Pairs, realistic OHLCV generator, micro-tick engine
+│   │   ├── aiAnalysisEngine.ts      # Gemini API + Quant Heuristic Fallback engine
+│   │   └── audioService.ts          # ElevenLabs & Web Speech audio service
+│   ├── components/
+│   │   ├── Header.tsx               # Top navigation, status, live tick toggle
+│   │   ├── Watchlist.tsx            # Filterable currency list with live quotes
+│   │   ├── CandlestickChart.tsx     # High-performance HTML5 Canvas chart
+│   │   ├── AiMarketIntelligence.tsx # AI scan report, trade levels, audio readout
+│   │   ├── AiCopilotChat.tsx        # Interactive AI chat assistant
+│   │   ├── CurrencyStrengthMeter.tsx# 8-currency relative strength meter
+│   │   ├── CorrelationMatrix.tsx    # Correlation heatmap table
+│   │   ├── RiskCalculator.tsx       # Lot sizing and margin calculator
+│   │   ├── EconomicCalendar.tsx     # Macro releases with AI forecasts
+│   │   └── SettingsModal.tsx        # Gemini & ElevenLabs API key management
+│   ├── App.tsx                      # Master terminal container
+│   ├── main.tsx                     # React DOM entry point
+│   └── index.css                    # Tailwind CSS & custom fintech styles
+├── package.json
+├── vite.config.ts
+├── tailwind.config.js
+└── index.html
 ```
 
-There is currently no package manifest, application entry point, build configuration, backend, or automated test suite.
+---
 
-## Use in a React project
+## Getting Started
 
-The component requires React, `lucide-react`, Tailwind CSS configured to scan the component's location, and a browser with Canvas support. Audio features also use browser media APIs and, for the fallback, speech synthesis.
+### Prerequisites
+- Node.js (v18+)
+- npm
 
-1. Start with an existing React application that has Tailwind CSS configured.
-2. Install the icon dependency in that application:
+### Installation
+```bash
+npm install
+```
+*(On Windows PowerShell with script execution restricted, use `npm.cmd install`)*
 
-   ```bash
-   npm install lucide-react
-   ```
+### Development Server
+```bash
+npm run dev
+```
+*(Or `npm.cmd run dev`)*
 
-3. Copy `fx_market_ai_terminal.tsx` into the application's source directory. Although the supplied file has a `.tsx` extension, it uses untyped JSX. For a JavaScript React project, save the copy as `FxMarketAiTerminal.jsx`. A strict TypeScript project will need type annotations for state, refs, function parameters, and API responses.
-4. Render the component from your application's entry component:
+The application will start on `http://localhost:3000`.
 
-   ```jsx
-   import FxMarketAiTerminal from './FxMarketAiTerminal.jsx';
+### Production Build
+```bash
+npm run build
+```
+*(Or `npm.cmd run build`)*
 
-   export default function App() {
-     return <FxMarketAiTerminal />;
-   }
-   ```
+Produces an optimized production bundle in the `dist/` directory.
 
-5. Run the host application's development command. This repository itself does not provide an `npm run dev` script.
+---
 
-Use a client-rendered component in frameworks that distinguish server and client components: this dashboard uses React hooks and browser APIs.
-
-## AI market scans
-
-`runAiScan` currently posts to a Gemini `generateContent` endpoint using the model identifier `gemini-3-flash-preview`. The request URL has an empty API key, and there is no Gemini credential setting in the UI, so a successful AI response is not configured out of the box.
-
-The prompt sends the selected pair and timeframe; it does not send candle history or a live market feed. Before enabling real analysis, implement a server-side integration with authentication, market data inputs, HTTP error handling, and response validation. Keep service credentials on the server.
-
-The exception handler creates a simulated analysis if a request or parsing operation throws. An API error returned as valid JSON without candidate text can leave the analysis panel empty, because the current implementation does not check the Gemini response status. The demo fallback also contains fixed bullish rationale and narration that can disagree with a SELL signal.
-
-## Voice commentary
-
-Open **ElevenLabs Voice Settings** to enter an ElevenLabs API key, choose a predefined voice, and toggle automatic narration. The key and settings are held only in React state and reset on reload. The current implementation sends speech requests directly from the browser.
-
-With no ElevenLabs key, or if its request fails, the component attempts browser speech synthesis. Voice availability and playback depend on the browser. Commentary requires an analysis result containing a speech script.
-
-For a shared deployment, move authenticated speech requests behind a backend instead of embedding a service key in frontend source.
-
-## Current limitations
-
-- Market prices, currency strength values, and calendar entries are hardcoded; candles are randomly generated on chart redraws.
-- Timeframe selection redraws demo candles and changes the scan prompt; it does not retrieve historical candles.
-- EMA overlays are decorative curves, not calculated exponential moving averages. RSI and MACD buttons toggle state but do not render those indicators.
-- The calculator uses simplified fixed pip values and does not account for instrument contract specifications or currency conversion. Its results are illustrative.
-- Analysis results are not automatically cleared when changing the selected pair or timeframe; a previous scan can remain visible.
-- There is no broker connection, order execution, persistent storage, or authentication.
-
-## Development priorities
-
-- Add an application scaffold, dependency manifest, and build configuration.
-- Define TypeScript types and validate external API responses.
-- Replace demo values with a market data integration and implement real indicators.
-- Add server-side Gemini and ElevenLabs integrations with clear error states.
-- Improve instrument-specific position sizing and input validation.
-- Add tests for calculations, scan errors, and audio playback transitions.
-# fx-market-ai-terminal
+## Configuration & API Keys
+1. Launch the app and click **AI Settings** in the top navigation bar.
+2. *(Optional)* Enter your **Google Gemini API Key** and choose your preferred model (`gemini-2.5-flash` or `gemini-1.5-pro`).
+   - If left blank, the built-in Quantitative Heuristic Engine automatically powers all technical analysis and signals.
+3. *(Optional)* Enter your **ElevenLabs API Key** to enable studio-quality AI voice commentary.
+   - If left blank, the app seamlessly defaults to the browser's native Web Speech synthesis.
+4. Settings are automatically preserved in your browser's `localStorage`.
